@@ -1,0 +1,4 @@
+lookandfeel=1
+largura_janela=800
+altura_janela=600
+janela_maximizada=false
