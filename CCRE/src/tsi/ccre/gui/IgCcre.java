@@ -465,9 +465,9 @@ public class IgCcre extends JFrame {
 			tabelaPaineis[periodo - 1].setModel(new DefaultTableModel(linhasTabela, COLUNAS_TABELA) {
 		        private static final long serialVersionUID = 1L;
 		        
-		        // permite que apenas a última coluna seja editada (coluna de nota)
+		        // permite que apenas duas últimas colunas sejam editáveis (coluna de carga horária e nota)
 		        public boolean isCellEditable(int row, int column) {                
-		        	return column == 3 ? true : false;
+		        	return column == 2 || column == 3 ? true : false;
 		        };
 		    });
 			
@@ -524,7 +524,7 @@ public class IgCcre extends JFrame {
 		String nomeDisciplina = "";
 		double cargaHorariaDisciplina = 0;
 		double nota = 0;
-		
+
 		/*
 		 *  variável que indica se há pelo menos um elemento válido na coluna de notas,
 		 *  o que significa que é possível calcular o cre
@@ -552,23 +552,32 @@ public class IgCcre extends JFrame {
 					// armazenando os dados da tabela nas variáveis dos dados da disicplina
 					codDisciplina = Integer.parseInt(tabelaPaineis[i].getModel().getValueAt(linha, ++coluna).toString());
 					nomeDisciplina = tabelaPaineis[i].getModel().getValueAt(linha, ++coluna).toString();
-					cargaHorariaDisciplina = Double.parseDouble(tabelaPaineis[i].getModel().getValueAt(linha, ++coluna).toString());
 					
-					// se a coluna "nota" foi preenchida então o dado é armazenado
+					// se a coluna "carga horária" foi preenchida então o dado é armazenado
 					if(!tabelaPaineis[i].getModel().getValueAt(linha, ++coluna).toString().equals("")) {
-						nota = Double.parseDouble(tabelaPaineis[i].getModel().getValueAt(linha, coluna).toString());
+						cargaHorariaDisciplina = Double.parseDouble(tabelaPaineis[i].getModel().getValueAt(linha, coluna).toString());
 						
-						// valida se a nota está entre os valores permitidos
-						if(nota >= 0 && nota <= 100) {
-							disciplinas.add(new Disciplina(codDisciplina, nomeDisciplina, cargaHorariaDisciplina, nota));
-							valorValido = true;
+						// se a coluna "nota" foi preenchida então o dado é armazenado
+						if(!tabelaPaineis[i].getModel().getValueAt(linha, ++coluna).toString().equals("")) {
+							nota = Double.parseDouble(tabelaPaineis[i].getModel().getValueAt(linha, coluna).toString());
+							
+							// valida se a nota está entre os valores permitidos
+							if(nota >= 0 && nota <= 100 && cargaHorariaDisciplina >= 0) {
+								disciplinas.add(new Disciplina(codDisciplina, nomeDisciplina, cargaHorariaDisciplina, nota));
+								valorValido = true;
+							}
+							else
+								codDisciplinaErro += String.format("\n    %dº período - código da disciplina: %d", i + 1, codDisciplina);
 						}
-						else
-							codDisciplinaErro += String.format("\n    %dº período - código da disciplina: %d", i + 1, codDisciplina);
+						// senão a nota recebe -1 (significa que está disciplina não entrará no cálculo do cre)
+						else {
+							nota = -1;
+							codDisciplinaAviso += String.format("\n    %dº período - código da disciplina: %d", i + 1, codDisciplina);
+						}
 					}
-					// senão a nota recebe -1 (significa que está disciplina não entrará no cálculo do cre)
+					// senão a carga horária recebe -1 (significa que está disciplina não entrará no cálculo do cre)
 					else {
-						nota = -1;
+						cargaHorariaDisciplina = -1;
 						codDisciplinaAviso += String.format("\n    %dº período - código da disciplina: %d", i + 1, codDisciplina);
 					}
 				} catch(NumberFormatException e) {
@@ -576,10 +585,10 @@ public class IgCcre extends JFrame {
 				}
 			} // fim for
 		} // fim for
-		
+
 		// exibe uma mensagem de erro informando as linhas que não foram preenchidas corretamente
 		if(!codDisciplinaErro.equals("")) {
-			jTextArea.setText(String.format("As notas das seguintes disciplinas não foram preenchidas corretamente:\n"
+			jTextArea.setText(String.format("As notas ou cargas horárias das seguintes disciplinas não foram preenchidas corretamente:\n"
 					+ "OBS: As notas devem receber apenas números no intervalo de 0 a 100.\n%s" , codDisciplinaErro));
 			JOptionPane.showMessageDialog(this, jScrollPane, NOME_PROGRAMA + " - Erro", 0);
 		}
@@ -589,7 +598,7 @@ public class IgCcre extends JFrame {
 			 *  e portanto não entrarão no cálculo do cre
 			 */
 			if(!codDisciplinaAviso.equals("")) {
-				jTextArea.setText(String.format(String.format("As notas das seguintes disciplinas não foram preenchidas:\n"
+				jTextArea.setText(String.format(String.format("As notas ou cargas horárias das seguintes disciplinas não foram preenchidas:\n"
 						+ "OBS: Tais notas não entrarão no cálculo do Coeficiente de Rendimento Escolar.\n%s" , codDisciplinaAviso)));
 				JOptionPane.showMessageDialog(this, jScrollPane, NOME_PROGRAMA + " - Aviso", 2);
 			}
