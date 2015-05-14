@@ -10,4 +10,4 @@ notas e a alteração das cargas horárias das matérias, permitindo assim que a
 do coeficiente de rendimento escolar seja realizada de maneira ágil e dinâmica.
 <hr>
 <h4>Screenshots</h4>
-![tela](https://raw.github.com/GianCarlosB/CCRE/master/CCRE/screenshots/ccre.png)
+![tela](https://raw.github.com/GianCarlosB/CCRE/master/CCRE/screenshot/ccre.png)
