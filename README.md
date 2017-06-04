@@ -5,4 +5,4 @@ Programa criado utilizando a linguagem de programação Java, com o objetivo de 
 <a href="http://www.barbacena.ifsudestemg.edu.br/tsi"> aqui</a>.<br> O <strog>CCRE</strong> possui uma interface fácil de usar e personalizável, possibilitando ao usuário a inserção de suas notas e a alteração das cargas horárias das matérias, permitindo assim que a realização do cálculo do coeficiente de rendimento escolar seja realizada de maneira ágil e dinâmica.
 <hr>
 <h4>Screenshots</h4>
-![tela](https://raw.githubusercontent.com/GianCarlosB/CCRE/master/CCRE/screenshot/ccre.png)
+<img src="https://raw.githubusercontent.com/GianCarlosB/CCRE/master/CCRE/screenshot/ccre.png" alt="tela"/>
